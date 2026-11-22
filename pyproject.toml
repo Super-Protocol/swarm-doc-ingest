@@ -1,0 +1,40 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "swarm-doc-ingest"
+version = "0.1.0"
+description = "Confidential document ingestion on open components, emitting the nv-ingest element contract"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Super Protocol" }]
+
+# Versions are pinned exactly, not floored. The extraction numbers in
+# bakeoff/results.json belong to this set; a minor Docling release has already
+# been observed to change which layout preset exists and which TableFormer mode
+# is the default, and SUP-839's experience with vLLM is that an engine can start,
+# pass a health check and return fluent nonsense. A pin moves when the bake-off
+# has been re-run, not when a release appears.
+dependencies = [
+  "docling==2.151.1",
+  "rapidocr-onnxruntime==1.4.4",
+  "fastapi==0.165.0",
+  "uvicorn[standard]==0.54.0",
+  "python-multipart==0.0.34",
+  "pydantic==2.14.4",
+]
+
+[project.optional-dependencies]
+test = ["pytest==9.2.0", "httpx2==2.16.2", "reportlab==5.1.0", "python-docx==1.2.0"]
+
+[project.urls]
+Homepage = "https://github.com/Super-Protocol/swarm-doc-ingest"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/swarm_doc_ingest"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

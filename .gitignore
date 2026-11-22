@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+.venv*/
+build/
+dist/
+*.egg-info/
+.pytest_cache/
+
+# The bake-off's working set. The generated corpus is reproducible from
+# make_corpus.py, the model cache is 536 MiB of weights, and the per-run
+# extractions are large and uninteresting — results.json is the record that is
+# worth committing.
+bakeoff/corpus/
+bakeoff/models/
+bakeoff/out/
+bakeoff/easyocr-models/

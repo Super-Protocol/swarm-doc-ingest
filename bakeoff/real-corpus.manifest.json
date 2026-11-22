@@ -1,0 +1,72 @@
+{
+  "why": [
+    "The upstream documents and their transcribed cell grids are not in this",
+    "repository and must not be. They are under the NVIDIA Asset License",
+    "Agreement: evaluation is permitted, redistribution is not, and a verbatim",
+    "transcription of an NVIDIA document's own table cells committed to a public",
+    "repository is a partial reproduction of the asset. Decided on SUP-874,",
+    "2026-11-22.",
+    "",
+    "This manifest is what makes the comparison reproducible without publishing",
+    "either. Point INGEST_BAKEOFF_REAL_DIR at a directory holding the ground-truth",
+    "files below; the harness verifies both sides against these hashes, so a",
+    "re-run proves it scored the same extraction against the same truth. With the",
+    "directory absent the harness skips these rows and says so."
+  ],
+  "documents": {
+    "source": "https://github.com/NVIDIA-AI-Blueprints/rag",
+    "tag": "v2.6.2",
+    "path": "data/multimodal",
+    "licence": "NVIDIA Asset License Agreement (data/LICENSE.DATA in that tree)",
+    "files": [
+      {
+        "name": "table_test.pdf",
+        "bytes": 26342,
+        "sha256": "b81f79487b9956997c00e3266e5a320a65180f8b8a4c4d8d76fbeabb822025a3",
+        "contains": "one 21x6 table, 6 columns including the header row"
+      },
+      {
+        "name": "multimodal_test.pdf",
+        "bytes": 133446,
+        "sha256": "450dddab418e46717a83b977c9cd20ff2c001f91b59ef36f1fb16e6e121332ce",
+        "contains": "two tables, two charts, three bullet points - the document states this expectation in its own conclusion"
+      },
+      {
+        "name": "embedded_table.pdf",
+        "bytes": 192612,
+        "sha256": "7eeacd3c1a5a0111dd2a5a7204601d1d30636aa10a3af4fee1bb428a62a93d38",
+        "contains": "eight dependency tables from the pandas 1.4.4 manual"
+      }
+    ]
+  },
+  "ground_truth": {
+    "location": "$INGEST_BAKEOFF_REAL_DIR",
+    "files": [
+      {
+        "name": "table_test.json",
+        "sha256": "64ae21c718bf8a9ad5d3ee31609ca5c54498b29af7c2d635afa3c078ebff3f6a",
+        "tables": 1,
+        "paragraphs": 0
+      },
+      {
+        "name": "multimodal_test.json",
+        "sha256": "a0a8f64c58f1305271ea4ae4e6251aa616b5f868bc588efcead50678f168d793",
+        "tables": 2,
+        "paragraphs": 2
+      },
+      {
+        "name": "embedded_table.json",
+        "sha256": "ebe015f81b68c68d53488187bedfb80abe445bdbcc426a8de32d01d088cb3212",
+        "tables": 8,
+        "paragraphs": 0
+      }
+    ],
+    "shape": "{\"paragraphs\": [str, ...], \"tables\": [[[cell, ...], ...], ...]}"
+  },
+  "recorded_scores": {
+    "note": "Scores are ours and stay here; results.json holds the full 59 rows.",
+    "stack": "docling 2.151.1, layout_heron_default, TableFormer accurate, RapidOCR",
+    "table_f1_mean_upstream_corpus": 0.935,
+    "unstructured_hi_res_table_f1_mean_upstream_corpus": 0.238
+  }
+}
