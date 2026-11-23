@@ -2,7 +2,11 @@
 # Unstructured over the same corpus, scored with the same evaluator.
 set -u
 cd "$(dirname "$0")"
-U=../upstream/rag/data/multimodal
+# The upstream corpus is where the caller says it is, and `set -u` above makes
+# an unset variable fatal rather than empty: before this, the test two lines
+# below exited the script instead of skipping those rows.
+U=${UPSTREAM_MULTIMODAL:-}
+G=${INGEST_BAKEOFF_REAL_DIR:-}
 docs=(
  "corpus/born_digital.pdf corpus/ground_truth.json"
  "corpus/hard_tables.pdf corpus/ground_truth_hard.json"

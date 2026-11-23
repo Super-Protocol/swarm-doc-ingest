@@ -1,0 +1,548 @@
+[
+ {
+  "document": "born_digital.pdf",
+  "corpus": "ours",
+  "engine": "nv-ingest:text",
+  "text_cer": 0.0,
+  "tables_expected": 2,
+  "tables_emitted": 0,
+  "table_f1_mean": 0.0,
+  "cell_set_f1_mean": 0.0,
+  "tables": [
+   {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "cell_set_f1": 0.0,
+    "gt_shape": [
+     5,
+     5
+    ],
+    "got_shape": [
+     0,
+     0
+    ]
+   },
+   {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "cell_set_f1": 0.0,
+    "gt_shape": [
+     4,
+     4
+    ],
+    "got_shape": [
+     0,
+     0
+    ]
+   }
+  ],
+  "wall_s": 2.0,
+  "peak_rss_mib": 351.4,
+  "error": null,
+  "charts_emitted": 0,
+  "stages": [
+   "text"
+  ],
+  "nims": {}
+ },
+ {
+  "document": "hard_tables.pdf",
+  "corpus": "ours",
+  "engine": "nv-ingest:text",
+  "text_cer": 0.0,
+  "tables_expected": 2,
+  "tables_emitted": 0,
+  "table_f1_mean": 0.0,
+  "cell_set_f1_mean": 0.0,
+  "tables": [
+   {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "cell_set_f1": 0.0,
+    "gt_shape": [
+     5,
+     5
+    ],
+    "got_shape": [
+     0,
+     0
+    ]
+   },
+   {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "cell_set_f1": 0.0,
+    "gt_shape": [
+     4,
+     4
+    ],
+    "got_shape": [
+     0,
+     0
+    ]
+   }
+  ],
+  "wall_s": 1.98,
+  "peak_rss_mib": 351.8,
+  "error": null,
+  "charts_emitted": 0,
+  "stages": [
+   "text"
+  ],
+  "nims": {}
+ },
+ {
+  "document": "report.docx",
+  "corpus": "ours",
+  "engine": "nv-ingest:text",
+  "text_cer": 0.0,
+  "tables_expected": 2,
+  "tables_emitted": 0,
+  "table_f1_mean": 0.0,
+  "cell_set_f1_mean": 0.0,
+  "tables": [
+   {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "cell_set_f1": 0.0,
+    "gt_shape": [
+     5,
+     5
+    ],
+    "got_shape": [
+     0,
+     0
+    ]
+   },
+   {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "cell_set_f1": 0.0,
+    "gt_shape": [
+     4,
+     4
+    ],
+    "got_shape": [
+     0,
+     0
+    ]
+   }
+  ],
+  "wall_s": 2.0,
+  "peak_rss_mib": 355.2,
+  "error": null,
+  "charts_emitted": 0,
+  "stages": [
+   "text"
+  ],
+  "nims": {}
+ },
+ {
+  "document": "page.html",
+  "corpus": "ours",
+  "engine": "nv-ingest:text",
+  "text_cer": 1.0,
+  "tables_expected": 2,
+  "tables_emitted": 0,
+  "table_f1_mean": 0.0,
+  "cell_set_f1_mean": 0.0,
+  "tables": [
+   {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "cell_set_f1": 0.0,
+    "gt_shape": [
+     5,
+     5
+    ],
+    "got_shape": [
+     0,
+     0
+    ]
+   },
+   {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "cell_set_f1": 0.0,
+    "gt_shape": [
+     4,
+     4
+    ],
+    "got_shape": [
+     0,
+     0
+    ]
+   }
+  ],
+  "wall_s": 1.71,
+  "peak_rss_mib": 278.4,
+  "error": "ValueError: nv-ingest has no extraction backend for .html files",
+  "charts_emitted": 0,
+  "stages": [],
+  "nims": {}
+ },
+ {
+  "document": "scanned.pdf",
+  "corpus": "ours",
+  "engine": "nv-ingest:text",
+  "text_cer": 1.0,
+  "tables_expected": 2,
+  "tables_emitted": 0,
+  "table_f1_mean": 0.0,
+  "cell_set_f1_mean": 0.0,
+  "tables": [
+   {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "cell_set_f1": 0.0,
+    "gt_shape": [
+     5,
+     5
+    ],
+    "got_shape": [
+     0,
+     0
+    ]
+   },
+   {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "cell_set_f1": 0.0,
+    "gt_shape": [
+     4,
+     4
+    ],
+    "got_shape": [
+     0,
+     0
+    ]
+   }
+  ],
+  "wall_s": 1.95,
+  "peak_rss_mib": 351.8,
+  "error": null,
+  "charts_emitted": 0,
+  "stages": [
+   "text"
+  ],
+  "nims": {}
+ },
+ {
+  "document": "scanned_hard.pdf",
+  "corpus": "ours",
+  "engine": "nv-ingest:text",
+  "text_cer": 1.0,
+  "tables_expected": 2,
+  "tables_emitted": 0,
+  "table_f1_mean": 0.0,
+  "cell_set_f1_mean": 0.0,
+  "tables": [
+   {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "cell_set_f1": 0.0,
+    "gt_shape": [
+     5,
+     5
+    ],
+    "got_shape": [
+     0,
+     0
+    ]
+   },
+   {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "cell_set_f1": 0.0,
+    "gt_shape": [
+     4,
+     4
+    ],
+    "got_shape": [
+     0,
+     0
+    ]
+   }
+  ],
+  "wall_s": 1.95,
+  "peak_rss_mib": 351.1,
+  "error": null,
+  "charts_emitted": 0,
+  "stages": [
+   "text"
+  ],
+  "nims": {}
+ },
+ {
+  "document": "scanned_page1.png",
+  "corpus": "ours",
+  "engine": "nv-ingest:text",
+  "text_cer": 1.0,
+  "tables_expected": 2,
+  "tables_emitted": 0,
+  "table_f1_mean": 0.0,
+  "cell_set_f1_mean": 0.0,
+  "tables": [
+   {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "cell_set_f1": 0.0,
+    "gt_shape": [
+     5,
+     5
+    ],
+    "got_shape": [
+     0,
+     0
+    ]
+   },
+   {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "cell_set_f1": 0.0,
+    "gt_shape": [
+     4,
+     4
+    ],
+    "got_shape": [
+     0,
+     0
+    ]
+   }
+  ],
+  "wall_s": 1.74,
+  "peak_rss_mib": 278.2,
+  "error": "ValueError: nv-ingest has no NIM-free text path for an image: every character on this page comes from the OCR NIM",
+  "charts_emitted": 0,
+  "stages": [],
+  "nims": {}
+ },
+ {
+  "document": "table_test.pdf",
+  "corpus": "upstream",
+  "engine": "nv-ingest:text",
+  "text_cer": null,
+  "tables_expected": 1,
+  "tables_emitted": 0,
+  "table_f1_mean": 0.0,
+  "cell_set_f1_mean": 0.0,
+  "tables": [
+   {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "cell_set_f1": 0.0,
+    "gt_shape": [
+     21,
+     6
+    ],
+    "got_shape": [
+     0,
+     0
+    ]
+   }
+  ],
+  "wall_s": 2.0,
+  "peak_rss_mib": 351.6,
+  "error": null,
+  "charts_emitted": 0,
+  "stages": [
+   "text"
+  ],
+  "nims": {}
+ },
+ {
+  "document": "multimodal_test.pdf",
+  "corpus": "upstream",
+  "engine": "nv-ingest:text",
+  "text_cer": 0.0,
+  "tables_expected": 2,
+  "tables_emitted": 0,
+  "table_f1_mean": 0.0,
+  "cell_set_f1_mean": 0.0,
+  "tables": [
+   {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "cell_set_f1": 0.0,
+    "gt_shape": [
+     5,
+     3
+    ],
+    "got_shape": [
+     0,
+     0
+    ]
+   },
+   {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "cell_set_f1": 0.0,
+    "gt_shape": [
+     6,
+     4
+    ],
+    "got_shape": [
+     0,
+     0
+    ]
+   }
+  ],
+  "wall_s": 2.01,
+  "peak_rss_mib": 352.4,
+  "error": null,
+  "charts_emitted": 0,
+  "stages": [
+   "text"
+  ],
+  "nims": {}
+ },
+ {
+  "document": "embedded_table.pdf",
+  "corpus": "upstream",
+  "engine": "nv-ingest:text",
+  "text_cer": null,
+  "tables_expected": 8,
+  "tables_emitted": 0,
+  "table_f1_mean": 0.0,
+  "cell_set_f1_mean": 0.0,
+  "tables": [
+   {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "cell_set_f1": 0.0,
+    "gt_shape": [
+     4,
+     3
+    ],
+    "got_shape": [
+     0,
+     0
+    ]
+   },
+   {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "cell_set_f1": 0.0,
+    "gt_shape": [
+     6,
+     3
+    ],
+    "got_shape": [
+     0,
+     0
+    ]
+   },
+   {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "cell_set_f1": 0.0,
+    "gt_shape": [
+     4,
+     3
+    ],
+    "got_shape": [
+     0,
+     0
+    ]
+   },
+   {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "cell_set_f1": 0.0,
+    "gt_shape": [
+     2,
+     3
+    ],
+    "got_shape": [
+     0,
+     0
+    ]
+   },
+   {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "cell_set_f1": 0.0,
+    "gt_shape": [
+     4,
+     3
+    ],
+    "got_shape": [
+     0,
+     0
+    ]
+   },
+   {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "cell_set_f1": 0.0,
+    "gt_shape": [
+     7,
+     3
+    ],
+    "got_shape": [
+     0,
+     0
+    ]
+   },
+   {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "cell_set_f1": 0.0,
+    "gt_shape": [
+     4,
+     3
+    ],
+    "got_shape": [
+     0,
+     0
+    ]
+   },
+   {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "cell_set_f1": 0.0,
+    "gt_shape": [
+     5,
+     3
+    ],
+    "got_shape": [
+     0,
+     0
+    ]
+   }
+  ],
+  "wall_s": 1.99,
+  "peak_rss_mib": 353.5,
+  "error": null,
+  "charts_emitted": 0,
+  "stages": [
+   "text"
+  ],
+  "nims": {}
+ }
+]
