@@ -179,6 +179,40 @@ Self-hosting needs one GPU for all four NIMs — they share a card in the compos
 file — and a Docker host, which a confidential cluster space is not: four
 containers cannot each hold `nvidia.com/gpu: 1` on a single card.
 
+### Which hosted path is live, and which is simply gone
+
+NVIDIA retires hosted endpoints steadily, and a retired one does not say
+"retired" unless you look: the three answers mean three different things, and
+only one of them is about the key.
+
+| Probe with a key | What it means |
+|---|---|
+| `403 Authorization failed` | the path is live and the key lacks NVIDIA Cloud Functions |
+| `410 Gone`, with an end-of-life date in `detail` | that name is retired; no key will bring it back |
+| `404` | there is no such endpoint, so the name is wrong |
+
+Measured 2026-11-23: the four coordinates above all answer **403**, a name
+invented for the purpose answers **404**, and the pre-2.6 `nemoretriever-`
+spellings answer **410** — `page-elements-v2` at end of life 2026-08-25,
+`table-structure-v1` and `graphic-elements-v1` on 2026-05-18. The 404 is what
+makes the 403 mean something: these paths exist and are waiting on the
+credential, rather than being three more dead names.
+
+So do not read a 410 as an entitlement problem, and do not pin a
+`nemoretriever-` name — those are what the pre-2.6 blueprint used.
+
+The registry holds exactly one release line per extraction NIM — `1.8.0` for the
+three detectors, `1.3.0` for OCR, with `1`, `1.8`/`1.3` and `latest` aliasing
+them, and `nv-ingest` at `26.3.0`. v2.6.2's pins are therefore the current
+models rather than an older generation, which is what lets the delta be read as
+the delta against today's NIM stack. Checked 2026-11-23; check it again before
+quoting the number, because this is the kind of fact that expires.
+
+A hosted path carries no version, so a hosted run measures each model as NVIDIA
+serves it on the day; a self-hosted run measures the tag you pinned. They are
+not guaranteed to be the same build. Say which configuration produced the number
+when reporting it.
+
 ### The no-NIM control, which is recorded
 
 `NVINGEST_ENGINE=nv-ingest:text` runs the text stage alone and contacts no
