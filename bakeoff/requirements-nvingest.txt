@@ -1,0 +1,32 @@
+# The upstream stack's own virtualenv: nv-ingest 26.3.0's extraction stages,
+# called as a library. Pinned to the version the blueprint composes
+# (nvcr.io/nvidia/nemo-microservices/nv-ingest:26.3.0, rag v2.6.2), because the
+# point of the bake-off is a comparison against a stated version.
+#
+#   python -m venv .venv-nvingest
+#   .venv-nvingest/bin/pip install -r requirements-nvingest.txt
+#
+# Everything below the first two lines is a dependency nv-ingest-api needs and
+# does not declare: its published wheel lists eleven requirements, and importing
+# nv_ingest_api.interface.extract needs sixteen. The container carries them, the
+# wheel does not, and each one is an ImportError at a different depth. Measured
+# on SUP-883, 2026-11-23 — if a later version declares them properly this file
+# shrinks to its first two lines.
+nv-ingest-api==26.3.0
+nv-ingest-client==26.3.0
+aiohttp==3.14.5
+grpcio==1.85.3
+grpcio-status==1.85.3
+langdetect==1.0.9
+nvidia-riva-client==2.28.0           # the audio stage is imported, never called
+opencv-python-headless==5.1.0.95
+openpyxl==3.1.5
+pillow==13.0.0
+protobuf==7.36.2
+pypdfium2==4.30.0                    # pinned by nv-ingest-api; unstructured-client wants newer
+python-docx==1.2.0
+python-pptx==1.0.2
+scikit-learn==1.9.1
+unstructured-client==0.42.2          # one of six extract_method backends, likewise;
+                                     # 0.43+ requires pypdfium2 5.x and cannot
+                                     # resolve against nv-ingest-api's 4.30.0 pin

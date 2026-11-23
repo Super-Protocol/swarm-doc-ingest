@@ -89,3 +89,109 @@ CUDA packages into a component whose entire purpose is not needing any, and take
 environment from 1.8 GiB to 6.3 GiB.
 
 `results.json` is the recorded run on this tree: 59 rows, 8 vCPU, no GPU.
+
+## The upstream stack: nv-ingest and the four extraction NIMs
+
+SUP-874 chose the open stack on the numbers above. The acceptance criterion it
+could not meet was the comparison against the thing being replaced, which is
+SUP-883: **the same documents, the same scorer, nv-ingest 26.3.0 and the four
+extraction NIMs on the other side, and the difference reported as a number.**
+
+`run_extract_nvingest.py` calls `nv_ingest_api`'s public extraction interface —
+the same code the `nv-ingest:26.3.0` container runs — rather than standing the
+service up behind Redis and a vector store. Four NIM endpoints are all it wants,
+and **no GPU on this side**:
+
+| Stage | NIM | What it contributes |
+|---|---|---|
+| Page Elements | `nvcr.io/nim/nvidia/nemotron-page-elements-v3:1.8.0` | where the tables and charts are |
+| Table Structure | `nvcr.io/nim/nvidia/nemotron-table-structure-v1:1.8.0` | the cell geometry of each table |
+| OCR | `nvcr.io/nim/nvidia/nemotron-ocr-v1:1.3.0` | the characters in each cell |
+| Graphic Elements | `nvcr.io/nim/nvidia/nemotron-graphic-elements-v1:1.8.0` | a chart as a table of series |
+
+Those are the coordinates `deploy/compose/nims.yaml` in `NVIDIA-AI-Blueprints/rag`
+v2.6.2 resolves to — not the `nemoretriever-*` names the blueprint used before
+2.6, which are retired (`410 Gone` on the hosted endpoint, no such tag in the
+registry).
+
+```bash
+python -m venv .venv-nvingest
+.venv-nvingest/bin/pip install -r requirements-nvingest.txt
+
+# self-hosted: docker compose up page-elements graphic-elements table-structure \
+#              nemotron-ocr   (rag/deploy/compose/nims.yaml; one GPU serves all four)
+export YOLOX_HTTP_ENDPOINT=http://localhost:8000/v1/infer
+export YOLOX_GRAPHIC_ELEMENTS_HTTP_ENDPOINT=http://localhost:8003/v1/infer
+export YOLOX_TABLE_STRUCTURE_HTTP_ENDPOINT=http://localhost:8006/v1/infer
+export OCR_HTTP_ENDPOINT=http://localhost:8012/v1/infer
+
+# or NVIDIA-hosted, which needs no GPU anywhere:
+# export YOLOX_HTTP_ENDPOINT=https://ai.api.nvidia.com/v1/cv/nvidia/nemotron-page-elements-v3
+# export YOLOX_GRAPHIC_ELEMENTS_HTTP_ENDPOINT=https://ai.api.nvidia.com/v1/cv/nvidia/nemotron-graphic-elements-v1
+# export YOLOX_TABLE_STRUCTURE_HTTP_ENDPOINT=https://ai.api.nvidia.com/v1/cv/nvidia/nemotron-table-structure-v1
+# export OCR_HTTP_ENDPOINT=https://ai.api.nvidia.com/v1/cv/nvidia/nemotron-ocr-v1
+# export NVIDIA_API_KEY=...        # never a literal in a script or a log
+
+UPSTREAM_MULTIMODAL=/path/to/rag/data/multimodal \
+INGEST_BAKEOFF_REAL_DIR=/path/to/ground-truth \
+  python bench_nvingest.py          # writes results-nvingest.json
+
+python delta.py                     # the difference, per document and in the mean
+```
+
+`stub_nims.py` answers all four endpoints with well-formed responses containing
+no detections. Run against it first: it separates "the plumbing is wrong" from
+"the models disagree" before a GPU hour or a credential is spent on the
+distinction. A run against the stub is not a measurement, and the
+`results-nvingest.json` it writes must not be kept.
+
+`delta.py` subtracts only the documents **both** stacks read. A runner records
+an extractor that raised as an empty extraction, which scores table F1 0.000 and
+CER 1.0000, so averaging such a row hands the other stack a win it did not earn
+— and two of those are certain rather than hypothetical: `page.html` errors on
+every real upstream run, and a credential the inference plane refuses errors on
+*every* row while the sweep still exits 0. Those rows are listed as a coverage
+finding instead, under "one side could not read these", and a file whose upstream
+side failed everywhere is refused with a non-zero exit rather than averaged. A
+document the runner crashed on produces no row at all; `bench_nvingest.py` ends
+with how many of its documents did produce one, because a short sweep is
+otherwise visible only in scrolled stderr.
+
+`bench_nvingest.py` imports its document list, its two corpora and the manifest
+hash check from `bench.py`, so "the same documents and the same scorer" is a
+property of the code rather than a claim in a comment.
+
+### The credential, which is the part that blocks
+
+Both configurations need an **NGC personal key**, and they need different things
+from it:
+
+- **the images** need `artifact-catalog`. All four NIM tags above pull with it.
+- **the hosted endpoints** need the key's products to include **NVIDIA Cloud
+  Functions**. A catalogue-scoped key is refused by the inference plane with
+  `403 Authorization failed` — verified on all four URLs and on
+  `integrate.api.nvidia.com`, SUP-883, 2026-11-23. `POST
+  https://api.ngc.nvidia.com/v3/keys/get-caller-info` with the key as
+  `credentials` prints its `products`, which is the cheapest way to tell the two
+  kinds of key apart before booking a GPU to work around the wrong one.
+
+Self-hosting needs one GPU for all four NIMs — they share a card in the compose
+file — and a Docker host, which a confidential cluster space is not: four
+containers cannot each hold `nvidia.com/gpu: 1` on a single card.
+
+### The no-NIM control, which is recorded
+
+`NVINGEST_ENGINE=nv-ingest:text` runs the text stage alone and contacts no
+endpoint. `results-nvingest-text-control.json` is that run on this tree, and it
+is the measurement of what the four NIMs are worth rather than of the pipeline:
+
+| | born-digital prose | tables found | a scan |
+|---|---|---|---|
+| nv-ingest, text stage only | CER 0.0000 | **0 of 19** | nothing at all (CER 1.0000) |
+
+Which is the same shape as the `pdfium` control in the sweep above — upstream's
+text stage *is* pdfium — and is why the comparison needs the NIMs to mean
+anything. Two rows in that file are findings rather than scores: nv-ingest 26.3.0
+has no HTML extraction backend at all, and its image path calls Page Elements
+whatever `extract_tables` says, because an image has no text layer for a
+NIM-free stage to read.
