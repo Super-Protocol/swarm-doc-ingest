@@ -121,8 +121,10 @@ def normalise(elements: list[dict]) -> dict:
 
     Three rules, each of them the symmetric case of one in `run_extract.py`:
 
-    * a table arrives as a `structured` element, and its cells are taken out of
-      the prose, so a table cannot earn text credit and table credit twice;
+    * a table arrives as a `structured` element, and that element is the only
+      thing table credit can come from. Nothing here reads a table out of prose,
+      so a stack that flattened one into text scores zero on table F1 however
+      good its characters are — which is the distinction being measured;
     * a chart is counted, not scored as a table. The ground truth's tables are
       tables; letting a chart's series table compete for a table match would
       score the two stacks on a representation choice rather than on the

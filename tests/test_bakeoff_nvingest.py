@@ -75,16 +75,28 @@ def test_the_simple_format_is_one_row_because_that_is_all_it_says():
                        "table_content_format": "simple"}) == [["Region Revenue EMEA 4.1"]]
 
 
-def test_the_table_is_a_table_and_its_cells_are_not_also_prose():
-    """The failure the whole bake-off exists to detect, asserted on this side of
-    it too: cells that arrive as prose score a perfect CER and zero table F1."""
+def test_the_prose_is_the_text_elements_and_nothing_a_table_element_carries():
+    """A table element contributes its grid and not a word of prose. What
+    upstream's own text stage puts in the text element is upstream's business —
+    at page depth that includes the characters inside the table, which neither
+    metric is distorted by — but the structured element must not add to it a
+    second time."""
     extraction = normalise([
         text_element("Three incidents exceeded the threshold."),
         table_element(MARKDOWN),
     ])
     assert extraction["tables"] == [ROWS]
     assert extraction["text"] == "Three incidents exceeded the threshold."
-    assert "EMEA" not in extraction["text"]
+
+
+def test_a_table_flattened_into_prose_earns_no_table_credit():
+    """The failure the whole bake-off exists to detect, asserted on this side of
+    it too: a stack that read the cells and emitted them as text scores a
+    perfect CER and zero tables, because table credit comes only from a
+    structured element."""
+    extraction = normalise([text_element(MARKDOWN)])
+    assert extraction["tables"] == []
+    assert "EMEA" in extraction["text"]
 
 
 def test_a_chart_is_counted_and_not_scored_as_a_table():

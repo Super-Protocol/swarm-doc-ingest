@@ -145,6 +145,18 @@ no detections. Run against it first: it separates "the plumbing is wrong" from
 distinction. A run against the stub is not a measurement, and the
 `results-nvingest.json` it writes must not be kept.
 
+`delta.py` subtracts only the documents **both** stacks read. A runner records
+an extractor that raised as an empty extraction, which scores table F1 0.000 and
+CER 1.0000, so averaging such a row hands the other stack a win it did not earn
+— and two of those are certain rather than hypothetical: `page.html` errors on
+every real upstream run, and a credential the inference plane refuses errors on
+*every* row while the sweep still exits 0. Those rows are listed as a coverage
+finding instead, under "one side could not read these", and a file whose upstream
+side failed everywhere is refused with a non-zero exit rather than averaged. A
+document the runner crashed on produces no row at all; `bench_nvingest.py` ends
+with how many of its documents did produce one, because a short sweep is
+otherwise visible only in scrolled stderr.
+
 `bench_nvingest.py` imports its document list, its two corpora and the manifest
 hash check from `bench.py`, so "the same documents and the same scorer" is a
 property of the code rather than a claim in a comment.

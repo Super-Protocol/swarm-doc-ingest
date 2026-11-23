@@ -48,11 +48,12 @@ def main() -> None:
             f"{PYTHON} does not exist. The upstream stack needs its own "
             "virtualenv (nv-ingest-api, nv-ingest-client); see README.md, or "
             "set NVINGEST_PYTHON.")
-    rows = []
+    rows, skipped = [], []
     docs = DOCS + (UPSTREAM_DOCS if upstream_available() else [])
     for doc, gtf, _needs_ocr in docs:
         if not doc.exists():
             print(f"-- skipping {doc.name}: not present", file=sys.stderr)
+            skipped.append((doc.name, "not present"))
             continue
         gt = json.loads(gtf.read_text())
         tag = f"{doc.stem}_{ENGINE.replace(':', '-')}"
@@ -60,7 +61,13 @@ def main() -> None:
         r = subprocess.run([PYTHON, str(RUNNER), ENGINE, str(doc), str(dest)],
                            capture_output=True, text=True)
         if r.returncode != 0:
+            # A runner that exits non-zero writes no extraction, so this
+            # document has no row — and `delta.py` would then simply have one
+            # fewer document to subtract. Collected here so a short sweep is
+            # visible in the output rather than only in scrolled stderr.
             print(f"!! {tag} exited {r.returncode}: {r.stderr[-600:]}", file=sys.stderr)
+            skipped.append((doc.name, f"runner exited {r.returncode}: "
+                                      f"{(r.stderr.strip().splitlines() or [''])[-1][:160]}"))
             continue
         ex = json.loads(dest.read_text())
         s = score(gt, ex)
@@ -94,6 +101,13 @@ def main() -> None:
               f"| {r['table_f1_mean']:.3f} | {r['cell_set_f1_mean']:.3f} "
               f"| {r['charts_emitted']} | {r['wall_s']} s "
               f"| {r['peak_rss_mib']:.0f} MiB |")
+
+    print(f"\n{len(rows)} of {len(docs)} documents produced a row.")
+    for name, why in skipped:
+        print(f"-- no row for {name}: {why}")
+    if skipped:
+        print("A document with no row is not a zero and not a loss — it is "
+              "absent from the comparison. Say so when reporting the delta.")
 
 
 if __name__ == "__main__":
