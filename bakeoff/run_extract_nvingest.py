@@ -189,6 +189,30 @@ def auth_token() -> str:
     return os.environ.get("NVIDIA_API_KEY") or os.environ.get("NGC_API_KEY") or ""
 
 
+def request_markdown_tables(df) -> None:
+    """Ask the table stage for `markdown`, which is what calls the second NIM.
+
+    The PDF extractor leaves `table_content_format` at `pseudo_markdown`, and
+    upstream's table stage reads that field to decide what to do:
+    `enable_yolox = table_content_format in (MARKDOWN,)`. On `pseudo_markdown`
+    it **never calls the Table Structure NIM** — `table_content` is then
+    `convert_ocr_response_to_psuedo_markdown(...)`, OCR text lines with pipes
+    between the words, which is not a grid at all: on `born_digital.pdf` it put
+    the table's caption and the sentence above it in as rows, shifting every
+    real row down by two.
+
+    Measured on SUP-883, 2026-11-26: that configuration scores cell F1 0.407
+    and table **F1 0.000** — every value read, no geometry — and reporting it
+    would have described three NIMs as four. The field is set here, once, so the
+    stack being measured is the one the blueprint composes.
+    """
+    for metadata in df["metadata"]:
+        content_metadata = (metadata or {}).get("content_metadata") or {}
+        if _plain(content_metadata.get("subtype")) == "table":
+            table_metadata = metadata.setdefault("table_metadata", {})
+            table_metadata["table_content_format"] = "markdown"
+
+
 def frame(returned: Any):
     """Some stages return the ledger, some return `(ledger, trace)`. Upstream is
     inconsistent across the three entry points this file calls and the shape is
@@ -268,6 +292,7 @@ def extract(path: Path, *, with_nims: bool) -> tuple[list[dict], list[str]]:
             yolox_infer_protocol=page_proto, **common))
 
     if with_nims and len(df):
+        request_markdown_tables(df)
         table_ep, table_proto = endpoints("YOLOX_TABLE_STRUCTURE", required=True)
         ocr_ep, ocr_proto = endpoints("OCR", required=True)
         graphic_ep, graphic_proto = endpoints("YOLOX_GRAPHIC_ELEMENTS", required=True)

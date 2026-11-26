@@ -23,7 +23,12 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "bakeoff"))
 
-from run_extract_nvingest import normalise, pipe_grid, table_grid  # noqa: E402
+from run_extract_nvingest import (  # noqa: E402
+    normalise,
+    pipe_grid,
+    request_markdown_tables,
+    table_grid,
+)
 
 MARKDOWN = "\n".join([
     "| Region | Revenue | Margin |",
@@ -138,3 +143,48 @@ def test_an_image_element_contributes_nothing():
 
 def test_whitespace_only_prose_is_dropped():
     assert normalise([text_element("   ")])["text"] == ""
+
+
+class _Frame:
+    """The two columns of the ledger `request_markdown_tables` touches, without
+    pandas: the bake-off's upstream venv has it, CI deliberately does not."""
+
+    def __init__(self, rows):
+        self.rows = rows
+
+    def __getitem__(self, column):
+        assert column == "metadata"
+        return [row["metadata"] for row in self.rows]
+
+
+def test_the_table_stage_is_asked_for_markdown_which_is_what_calls_the_nim():
+    """Without this the second NIM is never called and the numbers are a lie.
+
+    Upstream's table stage reads `table_content_format` to decide:
+    `enable_yolox = table_content_format in (MARKDOWN,)`. The PDF extractor
+    leaves it at `pseudo_markdown`, under which `table_content` is OCR text
+    lines with pipes between the words — measured at cell F1 0.407 and table F1
+    0.000 on `born_digital.pdf`, because the caption landed in as a row. A
+    sweep in that state reports three NIMs as four.
+    """
+    rows = [{"metadata": {"content_metadata": {"type": "structured", "subtype": "table"},
+                          "table_metadata": {"table_content_format": "pseudo_markdown"}}}]
+    request_markdown_tables(_Frame(rows))
+    assert rows[0]["metadata"]["table_metadata"]["table_content_format"] == "markdown"
+
+
+def test_a_chart_element_is_left_alone():
+    """Charts go to Graphic Elements, which has its own joining; only the table
+    stage reads this field to decide whether to call Table Structure."""
+    rows = [{"metadata": {"content_metadata": {"type": "structured", "subtype": "chart"},
+                          "table_metadata": {"table_content_format": "pseudo_markdown"}}},
+            {"metadata": {"content_metadata": {"type": "text"}}}]
+    request_markdown_tables(_Frame(rows))
+    assert rows[0]["metadata"]["table_metadata"]["table_content_format"] == "pseudo_markdown"
+    assert "table_metadata" not in rows[1]["metadata"]
+
+
+def test_a_table_element_with_no_table_metadata_yet_gets_one():
+    rows = [{"metadata": {"content_metadata": {"type": "structured", "subtype": "table"}}}]
+    request_markdown_tables(_Frame(rows))
+    assert rows[0]["metadata"]["table_metadata"] == {"table_content_format": "markdown"}
