@@ -179,6 +179,27 @@ Self-hosting needs one GPU for all four NIMs — they share a card in the compos
 file — and a Docker host, which a confidential cluster space is not: four
 containers cannot each hold `nvidia.com/gpu: 1` on a single card.
 
+### The format field that decides how many NIMs you are measuring
+
+`table_content_format` on a structured element is not a formatting preference.
+Upstream's table stage reads it to decide whether to run the Table Structure
+NIM at all:
+
+```python
+enable_yolox = True if table_content_format in (TableFormatEnum.MARKDOWN,) else False
+```
+
+The PDF extractor leaves it at `pseudo_markdown`, and under that value
+`table_content` is `convert_ocr_response_to_psuedo_markdown(...)` — OCR text
+lines with pipes between the words, no cell geometry, the caption and the
+sentence above the table included as rows. It looks like a table and scores like
+noise: cell F1 0.407, table **F1 0.000** on `born_digital.pdf`, measured on
+SUP-883 before the field was set. Every status code in that run was 200.
+
+`run_extract_nvingest.py` therefore sets the field to `markdown` before the
+table stage, and `tests/test_bakeoff_nvingest.py` asserts it. **A sweep that
+does not is measuring three NIMs and calling them four.**
+
 ### Which hosted path is live, and which is simply gone
 
 NVIDIA retires hosted endpoints steadily, and a retired one does not say
@@ -212,6 +233,53 @@ A hosted path carries no version, so a hosted run measures each model as NVIDIA
 serves it on the day; a self-hosted run measures the tag you pinned. They are
 not guaranteed to be the same build. Say which configuration produced the number
 when reporting it.
+
+### The measurement, run 2026-11-26
+
+Both stacks, the generated corpus, the same evaluator. The open stack's rows are
+the recorded sweep in `results.json` (the configuration the service ships);
+upstream's are `results-nvingest.json`, nv-ingest 26.3.0's stages against the
+four hosted NIMs on `ai.api.nvidia.com`. `delta.py` prints this.
+
+| | table F1 ours | table F1 upstream | cell F1 ours | cell F1 upstream | CER ours | CER upstream |
+|---|---|---|---|---|---|---|
+| `born_digital.pdf` | 0.500 | 0.019 | 0.500 | **0.872** | 0.0000 | 0.0000 |
+| `hard_tables.pdf` | 0.522 | 0.000 | **0.900** | 0.449 | 0.0000 | 0.0000 |
+| `report.docx` | 1.000 | 0.000 | 1.000 | 0.000 | 0.0000 | 0.0000 |
+| `scanned.pdf` | 1.000 | 0.019 | 1.000 | 0.919 | **0.0000** | 1.0000 |
+| `scanned_hard.pdf` | 0.923 | 0.000 | 0.923 | 0.415 | **0.0000** | 1.0000 |
+| `scanned_page1.png` | 1.000 | 0.018 | 1.000 | 0.875 | **0.0000** | 0.9438 |
+| **mean Δ (ours − upstream)** | **+0.815** | | **+0.299** | | **+0.4906** | |
+
+`page.html` is excluded from the means and reported as a coverage gap:
+nv-ingest 26.3.0 has no HTML extraction backend.
+
+Four things in that table are worth more than the mean:
+
+1. **Upstream reads ruled cells better than we do.** cell F1 0.872 against our
+   0.500 on `born_digital.pdf`, 0.919 against 1.000 on its scan. Where it falls
+   behind is the table drawn **without ruling lines** — 0.449 against our 0.900
+   — which is the one that matters for a finance pack, and is the same finding
+   that chose `heron_default` over `egret_large` in the sweep above.
+2. **Its table F1 is a caption, not a failure.** See `caption_shift.py`: drop the
+   caption row its own crop introduced and those grids read 0.968-0.990, better
+   than ours. Report the emitted number — a consumer gets the caption — but
+   never report it as "upstream cannot read a table".
+3. **A scan yields no prose at all** in this configuration: CER 1.0000 on both
+   scanned PDFs. pdfium finds no text layer and the OCR NIM is applied to
+   structured crops, not to the page. Upstream's answer to that is
+   `nemotron-parse`, a fifth NIM outside this comparison.
+4. **The `.docx` tables are gone, not flattened.** Zero structured elements, and
+   no cell value anywhere in the prose — `Severity`, `Critical`, `Median` all
+   absent. Our stack reads both tables from the same file at F1 1.000.
+
+The upstream-corpus rows (`table_test.pdf`, `multimodal_test.pdf`,
+`embedded_table.pdf`) are **not** in this run: the transcribed ground truth lived
+only in the SUP-874 working directory, which no longer exists, and
+`real-corpus.manifest.json` pins its sha256 — so a fresh transcription could not
+be shown to be the same truth. The manifest is what makes that visible instead of
+silent. Re-transcribing is a deliberate act with a new manifest entry, not a
+repair.
 
 ### The no-NIM control, which is recorded
 

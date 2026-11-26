@@ -1,0 +1,395 @@
+[
+ {
+  "document": "born_digital.pdf",
+  "corpus": "ours",
+  "engine": "nv-ingest",
+  "text_cer": 0.0,
+  "tables_expected": 2,
+  "tables_emitted": 2,
+  "table_f1_mean": 0.0192,
+  "cell_set_f1_mean": 0.8718,
+  "tables": [
+   {
+    "precision": 0.037,
+    "recall": 0.04,
+    "f1": 0.0385,
+    "cell_set_f1": 0.9231,
+    "gt_shape": [
+     5,
+     5
+    ],
+    "got_shape": [
+     6,
+     6
+    ]
+   },
+   {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "cell_set_f1": 0.8205,
+    "gt_shape": [
+     4,
+     4
+    ],
+    "got_shape": [
+     0,
+     0
+    ]
+   }
+  ],
+  "wall_s": 2.96,
+  "peak_rss_mib": 357.8,
+  "error": null,
+  "charts_emitted": 0,
+  "stages": [
+   "text",
+   "page-elements",
+   "table-structure",
+   "ocr",
+   "graphic-elements"
+  ],
+  "nims": {
+   "YOLOX": "https://ai.api.nvidia.com/v1/cv/nvidia/nemotron-page-elements-v3",
+   "YOLOX_TABLE_STRUCTURE": "https://ai.api.nvidia.com/v1/cv/nvidia/nemotron-table-structure-v1",
+   "YOLOX_GRAPHIC_ELEMENTS": "https://ai.api.nvidia.com/v1/cv/nvidia/nemotron-graphic-elements-v1",
+   "OCR": "https://ai.api.nvidia.com/v1/cv/nvidia/nemotron-ocr-v1"
+  }
+ },
+ {
+  "document": "hard_tables.pdf",
+  "corpus": "ours",
+  "engine": "nv-ingest",
+  "text_cer": 0.0,
+  "tables_expected": 2,
+  "tables_emitted": 2,
+  "table_f1_mean": 0.0,
+  "cell_set_f1_mean": 0.449,
+  "tables": [
+   {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "cell_set_f1": 0.898,
+    "gt_shape": [
+     5,
+     5
+    ],
+    "got_shape": [
+     0,
+     0
+    ]
+   },
+   {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "cell_set_f1": 0.0,
+    "gt_shape": [
+     4,
+     4
+    ],
+    "got_shape": [
+     0,
+     0
+    ]
+   }
+  ],
+  "wall_s": 2.89,
+  "peak_rss_mib": 357.1,
+  "error": null,
+  "charts_emitted": 0,
+  "stages": [
+   "text",
+   "page-elements",
+   "table-structure",
+   "ocr",
+   "graphic-elements"
+  ],
+  "nims": {
+   "YOLOX": "https://ai.api.nvidia.com/v1/cv/nvidia/nemotron-page-elements-v3",
+   "YOLOX_TABLE_STRUCTURE": "https://ai.api.nvidia.com/v1/cv/nvidia/nemotron-table-structure-v1",
+   "YOLOX_GRAPHIC_ELEMENTS": "https://ai.api.nvidia.com/v1/cv/nvidia/nemotron-graphic-elements-v1",
+   "OCR": "https://ai.api.nvidia.com/v1/cv/nvidia/nemotron-ocr-v1"
+  }
+ },
+ {
+  "document": "report.docx",
+  "corpus": "ours",
+  "engine": "nv-ingest",
+  "text_cer": 0.0,
+  "tables_expected": 2,
+  "tables_emitted": 0,
+  "table_f1_mean": 0.0,
+  "cell_set_f1_mean": 0.0,
+  "tables": [
+   {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "cell_set_f1": 0.0,
+    "gt_shape": [
+     5,
+     5
+    ],
+    "got_shape": [
+     0,
+     0
+    ]
+   },
+   {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "cell_set_f1": 0.0,
+    "gt_shape": [
+     4,
+     4
+    ],
+    "got_shape": [
+     0,
+     0
+    ]
+   }
+  ],
+  "wall_s": 2.07,
+  "peak_rss_mib": 354.8,
+  "error": null,
+  "charts_emitted": 0,
+  "stages": [
+   "text",
+   "page-elements",
+   "table-structure",
+   "ocr",
+   "graphic-elements"
+  ],
+  "nims": {
+   "YOLOX": "https://ai.api.nvidia.com/v1/cv/nvidia/nemotron-page-elements-v3",
+   "YOLOX_TABLE_STRUCTURE": "https://ai.api.nvidia.com/v1/cv/nvidia/nemotron-table-structure-v1",
+   "YOLOX_GRAPHIC_ELEMENTS": "https://ai.api.nvidia.com/v1/cv/nvidia/nemotron-graphic-elements-v1",
+   "OCR": "https://ai.api.nvidia.com/v1/cv/nvidia/nemotron-ocr-v1"
+  }
+ },
+ {
+  "document": "page.html",
+  "corpus": "ours",
+  "engine": "nv-ingest",
+  "text_cer": 1.0,
+  "tables_expected": 2,
+  "tables_emitted": 0,
+  "table_f1_mean": 0.0,
+  "cell_set_f1_mean": 0.0,
+  "tables": [
+   {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "cell_set_f1": 0.0,
+    "gt_shape": [
+     5,
+     5
+    ],
+    "got_shape": [
+     0,
+     0
+    ]
+   },
+   {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "cell_set_f1": 0.0,
+    "gt_shape": [
+     4,
+     4
+    ],
+    "got_shape": [
+     0,
+     0
+    ]
+   }
+  ],
+  "wall_s": 1.74,
+  "peak_rss_mib": 277.7,
+  "error": "ValueError: nv-ingest has no extraction backend for .html files",
+  "charts_emitted": 0,
+  "stages": [],
+  "nims": {
+   "YOLOX": "https://ai.api.nvidia.com/v1/cv/nvidia/nemotron-page-elements-v3",
+   "YOLOX_TABLE_STRUCTURE": "https://ai.api.nvidia.com/v1/cv/nvidia/nemotron-table-structure-v1",
+   "YOLOX_GRAPHIC_ELEMENTS": "https://ai.api.nvidia.com/v1/cv/nvidia/nemotron-graphic-elements-v1",
+   "OCR": "https://ai.api.nvidia.com/v1/cv/nvidia/nemotron-ocr-v1"
+  }
+ },
+ {
+  "document": "scanned.pdf",
+  "corpus": "ours",
+  "engine": "nv-ingest",
+  "text_cer": 1.0,
+  "tables_expected": 2,
+  "tables_emitted": 2,
+  "table_f1_mean": 0.0192,
+  "cell_set_f1_mean": 0.9187,
+  "tables": [
+   {
+    "precision": 0.037,
+    "recall": 0.04,
+    "f1": 0.0385,
+    "cell_set_f1": 0.9231,
+    "gt_shape": [
+     5,
+     5
+    ],
+    "got_shape": [
+     6,
+     6
+    ]
+   },
+   {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "cell_set_f1": 0.9143,
+    "gt_shape": [
+     4,
+     4
+    ],
+    "got_shape": [
+     0,
+     0
+    ]
+   }
+  ],
+  "wall_s": 3.03,
+  "peak_rss_mib": 368.9,
+  "error": null,
+  "charts_emitted": 0,
+  "stages": [
+   "text",
+   "page-elements",
+   "table-structure",
+   "ocr",
+   "graphic-elements"
+  ],
+  "nims": {
+   "YOLOX": "https://ai.api.nvidia.com/v1/cv/nvidia/nemotron-page-elements-v3",
+   "YOLOX_TABLE_STRUCTURE": "https://ai.api.nvidia.com/v1/cv/nvidia/nemotron-table-structure-v1",
+   "YOLOX_GRAPHIC_ELEMENTS": "https://ai.api.nvidia.com/v1/cv/nvidia/nemotron-graphic-elements-v1",
+   "OCR": "https://ai.api.nvidia.com/v1/cv/nvidia/nemotron-ocr-v1"
+  }
+ },
+ {
+  "document": "scanned_hard.pdf",
+  "corpus": "ours",
+  "engine": "nv-ingest",
+  "text_cer": 1.0,
+  "tables_expected": 2,
+  "tables_emitted": 2,
+  "table_f1_mean": 0.0,
+  "cell_set_f1_mean": 0.4151,
+  "tables": [
+   {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "cell_set_f1": 0.8302,
+    "gt_shape": [
+     5,
+     5
+    ],
+    "got_shape": [
+     0,
+     0
+    ]
+   },
+   {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "cell_set_f1": 0.0,
+    "gt_shape": [
+     4,
+     4
+    ],
+    "got_shape": [
+     0,
+     0
+    ]
+   }
+  ],
+  "wall_s": 2.92,
+  "peak_rss_mib": 368.6,
+  "error": null,
+  "charts_emitted": 0,
+  "stages": [
+   "text",
+   "page-elements",
+   "table-structure",
+   "ocr",
+   "graphic-elements"
+  ],
+  "nims": {
+   "YOLOX": "https://ai.api.nvidia.com/v1/cv/nvidia/nemotron-page-elements-v3",
+   "YOLOX_TABLE_STRUCTURE": "https://ai.api.nvidia.com/v1/cv/nvidia/nemotron-table-structure-v1",
+   "YOLOX_GRAPHIC_ELEMENTS": "https://ai.api.nvidia.com/v1/cv/nvidia/nemotron-graphic-elements-v1",
+   "OCR": "https://ai.api.nvidia.com/v1/cv/nvidia/nemotron-ocr-v1"
+  }
+ },
+ {
+  "document": "scanned_page1.png",
+  "corpus": "ours",
+  "engine": "nv-ingest",
+  "text_cer": 0.9438,
+  "tables_expected": 2,
+  "tables_emitted": 2,
+  "table_f1_mean": 0.0179,
+  "cell_set_f1_mean": 0.875,
+  "tables": [
+   {
+    "precision": 0.0323,
+    "recall": 0.04,
+    "f1": 0.0357,
+    "cell_set_f1": 0.8929,
+    "gt_shape": [
+     5,
+     5
+    ],
+    "got_shape": [
+     7,
+     6
+    ]
+   },
+   {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "cell_set_f1": 0.8571,
+    "gt_shape": [
+     4,
+     4
+    ],
+    "got_shape": [
+     0,
+     0
+    ]
+   }
+  ],
+  "wall_s": 3.93,
+  "peak_rss_mib": 353.9,
+  "error": null,
+  "charts_emitted": 0,
+  "stages": [
+   "text",
+   "page-elements",
+   "table-structure",
+   "ocr",
+   "graphic-elements"
+  ],
+  "nims": {
+   "YOLOX": "https://ai.api.nvidia.com/v1/cv/nvidia/nemotron-page-elements-v3",
+   "YOLOX_TABLE_STRUCTURE": "https://ai.api.nvidia.com/v1/cv/nvidia/nemotron-table-structure-v1",
+   "YOLOX_GRAPHIC_ELEMENTS": "https://ai.api.nvidia.com/v1/cv/nvidia/nemotron-graphic-elements-v1",
+   "OCR": "https://ai.api.nvidia.com/v1/cv/nvidia/nemotron-ocr-v1"
+  }
+ }
+]
